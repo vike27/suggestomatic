@@ -1,0 +1,45 @@
+<h1>Listing suggestions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Suggester</th>
+      <th>Description</th>
+      <th>Vote count</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @suggestions.each do |suggestion| %>
+      <tr>
+        <td><%= suggestion.suggester.email %></td>
+        <td><%= suggestion.description %></td>
+        <td><%= suggestion.vote_count %></td>
+        <td>
+          <% if policy(suggestion).vote? %>
+            <%= link_to 'Vote', suggestion_vote_path(suggestion), method: :patch %>
+          <% end %>
+        </td>
+        <td><%= link_to 'Show', suggestion %></td>
+        <td>
+        <% if policy(suggestion).edit? %>
+        <%= link_to 'Edit', edit_suggestion_path(suggestion) %>
+        <% end %>
+        </td>
+
+        <td>
+        <% if policy(suggestion).edit? %>
+        <%= link_to 'Destroy', suggestion, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<% if policy(Suggestion).new? %>
+<%= link_to 'New Suggestion', new_suggestion_path %>
+<% end %>
